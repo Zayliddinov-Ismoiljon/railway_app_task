@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, Form, Input, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, Spin, message } from 'antd';
 import axios from 'axios';
-// import logo from './assets/images/download.jpg';
+import { LoadingOutlined } from '@ant-design/icons';
 import './App.css';
 
 type FieldType = {
@@ -12,6 +12,22 @@ type FieldType = {
 function App() {
   
   const [form] = Form.useForm()
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return  <div className="container" style={{ position: 'fixed', top: '50%', left: '85%', transform: 'translate(-50%, -50%)' }}>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 42 }} spin allowFullScreen />} />
+    </div>;
+  }
 
   const onFinish = async (values: any) => {
     try {
